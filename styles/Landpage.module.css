@@ -1,0 +1,42 @@
+.title{
+    width: 20rem;
+    font-weight: 800;
+    margin-top: 5rem;
+    line-height: 3rem;
+    margin-bottom: 2rem;
+}
+.subTitle{
+    width: 30rem;
+    margin-bottom: 2rem;
+}
+.button{
+    width: 6rem;
+    background-color: #6379F4;
+    border-radius: 0.5rem;
+    font-size: 0.8rem;
+    padding: 0.5rem;
+}
+.phone{
+    position: relative;
+    height: 100vh;
+}
+.backgroundPhone{
+    height: 27rem;
+    background-color: #6379F4;
+    width: 100% ;
+    position: absolute;
+    border-bottom-left-radius: 10rem;
+    z-index: 10;
+}
+.phoneImage{
+    position: absolute;
+    left: 10rem;
+    z-index: 100;
+}
+.bgAbout{
+    background-color: #473AD10F;
+}
+.aboutSubTitle{
+    width: 30rem;
+    text-align: center;
+}

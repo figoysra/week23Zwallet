@@ -1,0 +1,29 @@
+.title{
+    font-size: 1.5rem;
+    width: 28rem;
+    line-height: 2rem;
+    letter-spacing: 2px;
+}
+.subTitle{
+    font-size: 0.9rem;
+    width: 25rem;
+    color: #3A3D42;
+    line-height: 1.5rem;
+    margin-top: 1rem;
+}
+.pinBox{
+    width: 3rem;
+    height: 4rem;
+    padding-top: 1rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border: 1px solid grey;
+    border-radius: 0.6rem;
+    margin-right: 1.7rem;
+}
+.buttonConfirm{
+    width: 30rem;
+    padding: 10px 0px;
+    background-color: #6379F4;
+    border-radius: 10px;
+}

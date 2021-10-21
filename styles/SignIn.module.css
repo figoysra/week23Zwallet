@@ -1,0 +1,26 @@
+.title{
+    font-size: 1.5rem;
+    width: 30rem;
+    line-height: 2rem;
+    letter-spacing: 2px;
+}
+.subTitle{
+    font-size: 0.9rem;
+    width: 25rem;
+    color: #34383d;
+    line-height: 1.5rem;
+    margin-top: 1rem;
+}
+.input{
+    width: 30rem;
+    font-size: 1rem;
+}
+.buttonSignIn{
+    width: 30rem;
+    padding: 10px 0px;
+    background-color: #6379F4;
+    border-radius: 10px;
+}
+.subsubTitle{
+    font-size: 0.9rem;
+}
