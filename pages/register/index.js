@@ -6,6 +6,7 @@ import styles from '../../styles/SignIn.module.css'
 import axios from "axios"
 import { API_URL } from "../../utils";
 import { useRouter } from "next/router";
+import { REGISTER_USER } from "../../redux/actions/usersAction";
 
 const Register = () =>{
     const router = useRouter();
@@ -35,13 +36,14 @@ const Register = () =>{
             setError("please fill the input")
         }else{
             // console.log(`${API_URL}/register`);
-            axios.post(`${API_URL}/register`, values)
+            // axios.post(`${API_URL}/register`, values)
+            REGISTER_USER(values)
             .then((response)=>{
-                localStorage.setItem("id", response.data.result.id);
+                localStorage.setItem("id", response.result.id);
                 router.push("/pin")
                 // console.log(response.data.result.id);
             }).catch((error)=>{
-                setError(error.response.data.error);
+                setError(error.setValuesdata.error);
                 // console.log(error)
             })
         }

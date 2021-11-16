@@ -6,8 +6,6 @@ import {
   AiOutlinePlus,
   AiOutlineArrowDown,
 } from "react-icons/ai";
-import Image from "next/image";
-import phone from "../public/helperImage/phone.png";
 import styles from "../styles/Dashboard.module.css";
 import Guard from "../HOC/guard"
 import axios from "axios"
@@ -15,6 +13,9 @@ import { API_URL } from "../utils";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import CurrencyFormat from "react-currency-format";
+import {useDispatch, useSelector} from "react-redux"
+import { GET_DATA_USER } from "../redux/actions/usersAction";
+import { GET_INCOME } from "../redux/actions/transactionAction";
 
 
 // export const token = () =>{
@@ -43,20 +44,34 @@ const Home = () => {
   const [expense, setExpense] = useState()
   const [history, setHistory] = useState()
   const router = useRouter()
-  const getIncome = (token) =>{
-    const headers = {
-      token
-    }
-    axios.get(`${API_URL}/income`, {headers})
-    .then((response)=>{
-      const totalIncome = response.data.result;
-      const total = totalIncome
+  const dispatch = useDispatch()
+  const user = useSelector(store => store.users)
+  const transaction = useSelector(store => store.transaction)
+  const getIncome = () =>{
+    // const headers = {
+    //   token
+    // }
+    dispatch(GET_INCOME())
+    // axios.get(`${API_URL}/income`, {headers})
+    // .then((response)=>{
+    //   const totalIncome = response.data.result;
+    //   const total = totalIncome
+    //     .map((item) => item.amount)
+    //     .reduce((prev, next) => prev + next);
+    //   setIncome(total)
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
+  }
+  const totalIncome = () =>{
+    if(transaction.income.length <= 0){
+      setIncome(0)
+    }else{
+      const total = transaction.income
         .map((item) => item.amount)
         .reduce((prev, next) => prev + next);
-      setIncome(total)
-    }).catch((err)=>{
-      console.log(err)
-    })
+      setIncome(total);
+    }
   }
   const getExpense = (token) =>{
     const headers = {
@@ -73,36 +88,38 @@ const Home = () => {
       console.log(err)
     })
   }
-  const transaction = (token) =>{
-    const headers = {
-      token,
-    };
-    axios
-      .get(`${API_URL}/transaction`, { headers })
-      .then((response) => {
-        setHistory(response.data.result)
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  // const transaction = (token) =>{
+  //   const headers = {
+  //     token,
+  //   };
+  //   axios
+  //     .get(`${API_URL}/transaction`, { headers })
+  //     .then((response) => {
+  //       setHistory(response.data.result)
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }
   useState(()=>{
     const token = localStorage.getItem("token")
-    const headers = {
-      token
-    }
-    axios.get(`${API_URL}/user`,{headers})
-    .then((response)=>{
-      setData(response.data.result)
-    })
-    .catch((error)=>{
-      console.log(error)
-    })
-    getIncome(token)
+    dispatch(GET_DATA_USER())
+    // const headers = {
+    //   token
+    // }
+    // axios.get(`${API_URL}/user`,{headers})
+    // .then((response)=>{
+    //   // setData(response.data.result)
+    // })
+    // .catch((error)=>{
+    //   console.log(error)
+    // })
+    getIncome()
+    totalIncome()
     getExpense(token)
-    transaction(token)
+    // transaction(token)
   },[])
-  console.log(history)
+  console.log(transaction.income)
 
 
   return (

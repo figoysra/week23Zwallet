@@ -6,6 +6,7 @@ import axios from "axios";
 import styles from '../../styles/SignIn.module.css'
 import { API_URL } from "../../utils";
 import { useRouter } from "next/router";
+import { HANDLE_LOGIN } from "../../redux/actions/usersAction";
 
 
 const Login = () =>{
@@ -30,14 +31,18 @@ const Login = () =>{
     };
     const handleSubmit = (e) =>{
         e.preventDefault()
-        axios.post(`${API_URL}/login`, values)
+        console.log(values)
+        HANDLE_LOGIN(values)
         .then((response)=>{
-            localStorage.setItem("token", response.data.token)
+            // console.log(response)
             router.push("/")
-        }).catch((error)=>{
-            setErrorMsg(error.response.data.error);
-            // console.log()
         })
+        .catch((err)=>{
+            console.log(err);
+            setErrorMsg(err.response.data.error);
+        })
+        
+        
     }
 
     return(
