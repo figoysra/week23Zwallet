@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 import CurrencyFormat from "react-currency-format";
 import {useDispatch, useSelector} from "react-redux"
 import { GET_DATA_USER } from "../redux/actions/usersAction";
-import { GET_INCOME } from "../redux/actions/transactionAction";
+import { GET_EXPENSE, GET_HISTORY, GET_INCOME } from "../redux/actions/transactionAction";
 
 
 // export const token = () =>{
@@ -39,9 +39,6 @@ import { GET_INCOME } from "../redux/actions/transactionAction";
 // }
 
 const Home = () => {
-  const [data, setData] = useState()
-  const [income, setIncome]=useState()
-  const [expense, setExpense] = useState()
   const [history, setHistory] = useState()
   const router = useRouter()
   const dispatch = useDispatch()
@@ -63,46 +60,38 @@ const Home = () => {
     //   console.log(err)
     // })
   }
-  const totalIncome = () =>{
-    if(transaction.income.length <= 0){
-      setIncome(0)
-    }else{
-      const total = transaction.income
-        .map((item) => item.amount)
-        .reduce((prev, next) => prev + next);
-      setIncome(total);
-    }
+  const getExpense = () =>{
+    dispatch(GET_EXPENSE())
+    // const headers = {
+    //   token,
+    // };
+    // axios.get(`${API_URL}/spending`, {headers})
+    // .then((response)=>{
+    //   const totalExpense = response.data.result;
+    //   const total = totalExpense
+    //     .map((item) => item.amount)
+    //     .reduce((prev, next) => prev + next);
+    //   setExpense(total)
+    // }).catch((err)=>{
+    //   console.log(err)
+    // })
   }
-  const getExpense = (token) =>{
-    const headers = {
-      token,
-    };
-    axios.get(`${API_URL}/spending`, {headers})
-    .then((response)=>{
-      const totalExpense = response.data.result;
-      const total = totalExpense
-        .map((item) => item.amount)
-        .reduce((prev, next) => prev + next);
-      setExpense(total)
-    }).catch((err)=>{
-      console.log(err)
-    })
+  const history_transaction = () =>{
+    dispatch(GET_HISTORY())
+    // const headers = {
+    //   token,
+    // };
+    // axios
+    //   .get(`${API_URL}/transaction`, { headers })
+    //   .then((response) => {
+    //     setHistory(response.data.result)
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   }
-  // const transaction = (token) =>{
-  //   const headers = {
-  //     token,
-  //   };
-  //   axios
-  //     .get(`${API_URL}/transaction`, { headers })
-  //     .then((response) => {
-  //       setHistory(response.data.result)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // }
   useState(()=>{
-    const token = localStorage.getItem("token")
+    // const token = localStorage.getItem("token")
     dispatch(GET_DATA_USER())
     // const headers = {
     //   token
@@ -115,33 +104,27 @@ const Home = () => {
     //   console.log(error)
     // })
     getIncome()
-    totalIncome()
-    getExpense(token)
+    getExpense()
+    history_transaction()
     // transaction(token)
   },[])
-  console.log(transaction.income)
+  console.log(user)
 
 
   return (
     <Dashboard>
       <div className={`${styles.balance} fontFamily bgBlue w-100 p-3 d-flex`}>
         <div className="w-75 text-white">
-          {data !== undefined ? (
-            <>
               <p className={`${styles.balanceTitle}`}>Balance</p>
               <h1 className={`${styles.balancePrice} fw-bold`}>
                 <CurrencyFormat
-                  value={data.saldo}
+                  value={user.user.saldo}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"Rp "}
                 />
               </h1>
-              <p className={`${styles.balanceNumberPhone}`}>{data.phone}</p>
-            </>
-          ) : (
-            <p>Loading ...</p>
-          )}
+              <p className={`${styles.balanceNumberPhone}`}>{user.user.phone}</p>
         </div>
         <div className="w-25 d-flex justify-content-center align-items-center flex-column">
           <button
@@ -177,7 +160,7 @@ const Home = () => {
                 <p className="mb-1">Income</p>
                 <p className="fw-bold fontFamily">
                   <CurrencyFormat
-                    value={income}
+                    value={transaction.totalIncome}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"Rp "}
@@ -197,7 +180,7 @@ const Home = () => {
                 <p className="mb-1">Expense</p>
                 <p className="fw-bold fontFamily">
                   <CurrencyFormat
-                    value={expense}
+                    value={transaction.totalExpense}
                     displayType={"text"}
                     thousandSeparator={true}
                     prefix={"Rp "}
@@ -211,10 +194,8 @@ const Home = () => {
           <div className={`mb-2 p-3 bg-white shadow mt-3 ${styles.graphic}`}>
             <p className="fw-bold fontFamily">Transaction History</p>
             <div className={`${styles.transaction}`}>
-              {history === undefined ?(
-                <p>Loading ...</p>
-              ):(
-                history.map((e,i)=>{
+              {/* {JSON.stringify(transaction.history)} */}
+                {transaction.history.map((e,i)=>{
                   return (
                     <div key={i} className="d-flex mt-3">
                       <div className={`${styles.transactionProfile}`}>
@@ -239,9 +220,8 @@ const Home = () => {
                         
                       </div>
                     </div>
-                  );
-                })
-              )}
+                  )}
+                )}
               
             </div>
           </div>
