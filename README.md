@@ -79,7 +79,7 @@ application is made with next js framework, Sequelize and Express.
 **Login as user**
 <br/>
 Email : userkedua@email.com <br/>
-Password : 12345
+Password : 12345 <br/>
 **Login as Tsuki**
 <br/>
 Email : tsukijapanese@email.com <br/>
