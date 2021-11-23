@@ -41,7 +41,7 @@
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
+    <li><a href="#screenshot">Screenshot</a></li>
   </ol>
 </details>
 
@@ -51,6 +51,10 @@
 ## About The Project
 
 ![](./ReadmeImage/Screenshot%20(48).png)
+
+Zwallet is a financial application used for money transfers. This application is equipped with
+features for top ups, payment history dashboards and transfer features between users.This
+application is made with next js framework, Sequelize and Express.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -72,9 +76,14 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Zwallet is a financial application used for money transfers. This application is equipped with
-features for top ups, payment history dashboards and transfer features between users.This
-application is made with next js framework, Sequelize and Express.
+**Login as user**
+<br/>
+Email : userkedua@email.com <br/>
+Password : 12345
+**Login as Tsuki**
+<br/>
+Email : tsukijapanese@email.com <br/>
+Password : 12345
 
 
 ### Installation
@@ -98,7 +107,7 @@ application is made with next js framework, Sequelize and Express.
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Screenshot
 
 Landing Page           |  Dashboard
 :-------------------------:|:-------------------------:
