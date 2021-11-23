@@ -15,7 +15,7 @@
     <a href="https://github.com/figoysra/zwallet-repo"><strong>Explore API »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://zwalletnextjs.netlify.app/landpage">View Demo</a>
     ·
     <a href="https://github.com/figoysra/week23Zwallet/issues">Report Bug</a>
     ·
