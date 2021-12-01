@@ -86,3 +86,35 @@ export const GET_HISTORY = () =>{
         })
     }
 }
+
+export const HANDLE_TOPUP = (form) =>{
+    return new Promise ((resolve,reject)=>{
+        const token = localStorage.getItem("token")
+        const headers = {
+            token : token
+        }
+        axios.post(`${API_URL}/topup`, form, {headers})
+        .then((response)=>{
+            resolve(response.data)
+        })
+        .catch((err)=>{
+            reject(err)
+        })
+    })
+}
+
+export const HANDLE_TRANSFER = (id,form) =>{
+    return new Promise ((resolve,reject)=>{
+        const token = localStorage.getItem("token")
+        const headers = {
+            token : token
+        }
+        axios.post(`${API_URL}/transfer/${id}`, form, {headers})
+        .then((response)=>{
+            resolve(response.data)
+        })
+        .catch((err)=>{
+            reject(err)
+        })
+    })
+}

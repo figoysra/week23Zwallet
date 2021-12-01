@@ -54,7 +54,7 @@ const Dashboard = (props) =>{
                                     </div>
                                 </Link>
                                 <div className={`${styles.logOut} d-flex align-items-end`}>
-                                    <Link href="#" passHref={true}>
+                                    <Link href="/profile" passHref={true}>
                                         <div onClick={handleLogOut}  className={`${router.pathname === "#" ? styles.linkActive : styles.link}`}>
                                             <div className={` ms-4 d-flex align-items-center fw-bold`}>
                                                 <MdLogout className={styles.menuIcon} />

@@ -3,6 +3,11 @@ const initialState = {
   loadUser: false,
   errorUser: false,
   errorUserMessage: "",
+
+  all: [],
+  loadAll: false,
+  errorAll: false,
+  errorAllMessage: "",
 };
 
 const usersReducer = (state = initialState, action) => {
@@ -18,6 +23,19 @@ const usersReducer = (state = initialState, action) => {
         errorUser: true,
         errorUserMessage: action.payload,
       };
+
+    case "GET_ALL_PENDING":
+      return { ...state, loadAll: true };
+    case "GET_ALL_FULFILLED":
+      return { ...state, loadAll: false, all: action.payload };
+    case "GET_ALL_REJECTED":
+      return {
+        ...state,
+        loadAll: false,
+        errorAll: true,
+        errorAllMessage: action.payload,
+      };
+      
     default:
       return state;
   }

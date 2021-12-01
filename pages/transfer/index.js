@@ -11,9 +11,13 @@ import {API_URL} from "../../utils"
 import axios from "axios"
 import PinInput from "react-pin-input";
 import CurrencyFormat from "react-currency-format";
+import { useDispatch, useSelector } from "react-redux";
+import { ALL_USERS, CHECK_PIN, GET_DATA_USER } from "../../redux/actions/usersAction";
+import { HANDLE_TRANSFER } from "../../redux/actions/transactionAction";
 
 const Transfer = () =>{
     const [modal, setModal] = useState(false);
+    const dispatch = useDispatch()
     const toggle = () => setModal(!modal);
     const [id, setId] = useState()
     const [inputpin, setInputPin] = useState("");
@@ -21,22 +25,23 @@ const Transfer = () =>{
         amount: "",
         note: "",
     })
-   
     const [errormsg, setErrorMsg] = useState();
+    const user = useSelector(store => store.users)
     const [data, setData] = useState([])
-    const [user, setUser] = useState({})
-    const getDataUsers = (token) =>{
-        const headers = {
-            token
-        }
-        axios.get(`${API_URL}/users`, {headers})
-        .then((response)=>{
-            setData(response.data.result)
-            console.log(response.data.result)
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
+    // const [user, setUser] = useState({})
+    const getDataUsers = () =>{
+        dispatch(ALL_USERS())
+        // const headers = {
+        //     token
+        // }
+        // axios.get(`${API_URL}/users`, {headers})
+        // .then((response)=>{
+        //     setData(response.data.result)
+        //     console.log(response.data.result)
+        // })
+        // .catch((err)=>{
+        //     console.log(err);
+        // })
     }
     const changeInput = (e) =>{
         setForm({
@@ -52,21 +57,24 @@ const Transfer = () =>{
             setErrorMsg("please fill input")
         }else{
             e.preventDefault();
-            const token = localStorage.getItem("token");
-            const headers = {
-                token
-            }
+            // const token = localStorage.getItem("token");
+            // const headers = {
+            //     token
+            // }
             const formPin = {
                 pin : inputpin
             }
-            axios.post(`${API_URL}/pin`, formPin, {headers})
+            CHECK_PIN(formPin)
+            // axios.post(`${API_URL}/pin`, formPin, {headers})
             .then((response)=>{
-                console.log(response)
+                
+            //     console.log(response)
                 const formTransaction = {
                     amount : parseInt(form.amount),
                     note : form.note
                 }
-                axios.post(`${API_URL}/transfer/${id}`, formTransaction, { headers })
+                HANDLE_TRANSFER(id,formTransaction)
+            //     axios.post(`${API_URL}/transfer/${id}`, formTransaction, { headers })
                 .then((response)=>{
                     setModal(!modal);
                     alert("Transfer Success")
@@ -74,57 +82,58 @@ const Transfer = () =>{
                     setId()
                 })
                 .catch((error)=>{
+                    // console.log(error)
                     alert("Transfer Failed")
                 })
             }).catch((error)=>{
-                console.log(error.response.data)
+                console.log(error)
                 setErrorMsg("Wrong Pin")
             })
         }
     }
-    const getUser = (token) =>{
-        const headers = {
-            token
-        }
-        axios.get(`${API_URL}/user`, {headers})
-        .then((response)=>{
-            setUser(response.data.result)
-            console.log(response.data.result)
-        })
-        .catch((err)=>{
-            console.log(err);
-        })
-    }
+    // const getUser = (token) =>{
+    //     const headers = {
+    //         token
+    //     }
+    //     axios.get(`${API_URL}/user`, {headers})
+    //     .then((response)=>{
+    //         setUser(response.data.result)
+    //         console.log(response.data.result)
+    //     })
+    //     .catch((err)=>{
+    //         console.log(err);
+    //     })
+    // }
     useEffect(()=>{
         const token = localStorage.getItem("token")
-        getDataUsers(token)
-        getUser(token)
+        getDataUsers()
+        dispatch(GET_DATA_USER())
     },[])
-    console.log(typeof inputpin)
+    // console.log(typeof inputpin)
 
     return(
         <Dashboard>
             <main className={`${styles.transfer}`}>
-                <div className={`${styles.receiverForm} ${id !== undefined ? "d-none" : "d-block"}  w-100 p-3`}>
+                <div className={`${styles.receiverForm} ${id !== undefined ? "d-none" : "d-block"}  w-100 p-4`}>
                     <h1 className={`${styles.titleReceiver} fontFamily`}>Search Receiver</h1>
                     <div className={`${styles.receiverSearch} p-2 d-flex mt-3`}>
                         <div className={`${styles.iconSearchBox}`}>
                             <BsSearch className={`${styles.iconSearch}`} />
                         </div>
-                        <input type="" name="" value="" placeholder="search receiver here ..." className={`${styles.inputForm} ps-2`} />
+                        <input type="" name="" value="" placeholder="Search Receiver Here ..." className={`${styles.inputForm} ps-2`} />
                     </div>
                     <div className={styles.listContact} >
-                        {data === undefined ? (
+                        {user.user.loadAll === true || user.user.errorAll === true ? (
                             <p>Loading ...</p>
                         ):(
-                            data.map((e,i)=>{
+                            user.all.map((e,i)=>{
                                 return(
                                     <div key={i} onClick={()=> setId(e.id)} className={`${styles.contact}  mt-4 w-100 shadow p-3 d-flex align-items-center`}>
                                         <div className={styles.profileContact}>
                                             <img className={styles.profileImage} src={`${API_URL}/${e.image}`} alt="contact Profile Picture" />
                                         </div>
                                         <div className='fontFamily ms-3'>
-                                            <p className='mb-1 fw-bold text-capitalize'>{e.firstName}</p>
+                                            <p className='mb-1 fw-bold text-capitalize'>{`${e.firstName} ${e.lastName}`}</p>
                                             <p>{e.phone}</p>
                                         </div>
                                     </div>
@@ -134,12 +143,12 @@ const Transfer = () =>{
                     </div>
                 </div>
 
-                <div  className={`${styles.transferMoney} ${id === undefined ? "d-none" : "d-block"}  w-100 p-3` }>
+                <div  className={`${styles.transferMoney} ${id === undefined ? "d-none" : "d-block"}  w-100 p-4` }>
                     <h1 className={`${styles.titleReceiver} fontFamily`}>Transfer Money</h1>
                     {id === undefined ? (
                         <p>Loading ...</p>
                     ):(
-                        data.map((e,i)=>{
+                        user.all.map((e,i)=>{
                             if(e.id === id){
                                 return(
                                     <div key={i} className={`${styles.contact} mt-4 w-100 shadow p-3 d-flex align-items-center`}>
@@ -147,7 +156,7 @@ const Transfer = () =>{
                                             <img className={styles.profileImage} src={`${API_URL}/${e.image}`} alt="contact Profile Picture" />
                                         </div>
                                         <div className='fontFamily ms-3'>
-                                            <p className='mb-1 fw-bold'>{e.firstName}</p>
+                                            <p className='mb-1 fw-bold text-capitalize'>{`${e.firstName} ${e.lastName}`}</p>
                                             <p>{e.phone}</p>
                                         </div>
                                     </div>
@@ -160,7 +169,7 @@ const Transfer = () =>{
                         <input className={`${styles.inputTransferAmount}`} type="number" placeholder="0.00" name="amount" value={form.amount} onChange={changeInput} />
                         <p className="mt-3 fontFamily">
                             <CurrencyFormat
-                                value={user !== undefined ? (user.saldo) : null }
+                                value={user.user !== undefined ? (user.user.saldo) : null }
                                 displayType={"text"}
                                 thousandSeparator={true}
                                 prefix="Rp "

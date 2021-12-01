@@ -7,15 +7,18 @@ import { BiBell } from "react-icons/bi";
 import {useEffect, useState} from "react"
 import axios from "axios"
 import { API_URL } from "../utils"
-import {useSelector } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
+import { GET_DATA_USER } from "../redux/actions/usersAction";
 
 const Navbar = () =>{
+    const dispatch = useDispatch()
     const user = useSelector((store) => store.users);
     const [token, setToken] = useState("")
     // const [data, setData] = useState()
     useEffect(()=>{
         const token = localStorage.getItem("token")
         setToken(token)
+        dispatch(GET_DATA_USER())
         // const headers = {
         //     token
         // }

@@ -1,0 +1,19 @@
+.profileContact {
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 10px;
+    margin-right: 10px;
+    /* border: 1px solid green; */
+    object-fit: cover;
+    position: relative;
+}
+
+.profileImage {
+    width: 100px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

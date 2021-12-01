@@ -1,9 +1,11 @@
 import Guard from "../../HOC/guard"
 import Dashboard from "../../layout/dashboard"
 import styles from "../../styles/Topup.module.css"
-import axios from "axios"
+// import axios from "axios"
 import { useState, useEffect } from "react";
-import { API_URL } from "../../utils";
+import {CHECK_PIN} from "../../redux/actions/usersAction"
+import {HANDLE_TOPUP} from "../../redux/actions/transactionAction"
+// import { API_URL } from "../../utils";
 import PinInput from "react-pin-input";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
@@ -29,33 +31,54 @@ const Topup = () =>{
             setErrorMsg("please fill input")
         }else{
             e.preventDefault();
-            const token = localStorage.getItem("token");
-            const headers = {
-                token
-            }
+            // const token = localStorage.getItem("token");
+            // const headers = {
+            //     token 
+            // }
             const formPin = {
                 pin : inputpin
             }
-            axios.post(`${API_URL}/pin`, formPin, {headers})
+            CHECK_PIN(formPin)
             .then((response)=>{
-                // console.log(response)
-                const formTopUp = {
-                    amount : parseInt(form.amount)
-                }
-                // console.log(typeof formTopUp.amount)
-                axios.post(`${API_URL}/topup`, formTopUp, { headers })
+                // console.log(typeof form.amount)
+                // const formAmount = {
+                //     amount : parseInt(form.amount)
+                // }
+
+                HANDLE_TOPUP(form)
                 .then((response)=>{
                     setModal(!modal);
                     alert("Top Up Success")
                     setErrorMsg("")
                 })
-                .catch((error)=>{
-                    alert("Top up Failed")
+                .catch((err)=>{
+                    console.log(err)
                 })
-            }).catch((error)=>{
-                console.log(error.response.data)
-                setErrorMsg("Wrong Pin")
             })
+            .catch((err)=>{
+                setErrorMsg("Wrong Pin");
+            })
+            // axios.post(`${API_URL}/pin`, formPin, {headers})
+            // .then((response)=>{
+            //     // console.log(response)
+            //     const formTopUp = {
+            //         amount : parseInt(form.amount)
+            //     }
+            //     // console.log(typeof formTopUp.amount)
+            //     axios.post(`${API_URL}/topup`, formTopUp, { headers })
+            //     .then((response)=>{
+            //         setModal(!modal);
+            //         alert("Top Up Success")
+            //         setErrorMsg("")
+            //     })
+            //     .catch((error)=>{
+            //         console.log(error)
+            //         alert("Top up Failed")
+            //     })
+            // }).catch((error)=>{
+            //     console.log(error.response.data)
+            //     setErrorMsg("Wrong Pin")
+            // })
         }
     }
     return(

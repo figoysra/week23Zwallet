@@ -204,10 +204,10 @@ const Home = () => {
                       <div className={`${styles.transactionName}`}>
                         <p className="fw-bold mb-1 fontFamily text-capitalize">{e.type === "Transfer" ?(e.senderUsers.firstName): (e.receiverUsers.firstName) }</p>
                         <p
-                          className="fontFamily"
+                          className={`fontFamily`}
                           style={{ fontSize: "0.8rem" }}
                         >
-                          {e.type}
+                          {e.type === "Transfer" && e.receiver === user.user.id ? "Accept" : e.type}
                         </p>
                       </div>
                       <div className={`text-dark ${styles.transactionAmount} fontFamily`}>
@@ -215,7 +215,8 @@ const Home = () => {
                           value={e.amount }
                           displayType={"text"}
                           thousandSeparator={true}
-                          prefix="Rp "
+                          className={`${e.type === "Transfer" && e.sender === user.user.id ? "text-danger" : "text-success"}`}
+                          prefix={`${e.type === "Transfer" && e.sender === user.user.id ? "- Rp. " : "+ Rp. "}`}
                         />
                         
                       </div>

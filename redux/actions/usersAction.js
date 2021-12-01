@@ -63,6 +63,38 @@ export const REGISTER_USER = (form) =>{
     })
 }
 
+export const CHECK_PIN = (formPin) =>{
+    return new Promise ((resolve,reject)=>{
+        const token = localStorage.getItem("token")
+        const headers = {
+            token : token
+        }
+        axios.post(`${API_URL}/pin`, formPin, {headers})
+        .then((response)=>{
+            resolve(response.data)
+        })
+        .catch((err)=>{
+            reject(err.response)
+        })
+    })
+}
+
+export const ALL_USERS = () =>{
+    return (dispatch) =>{
+        const headers = {
+            token: localStorage.getItem("token"),
+        }
+        dispatch(allPending())
+        axios.get(`${API_URL}/users`, { headers })
+        .then((response)=>{
+            dispatch(allFulfilled(response.data.result))
+        })
+        .catch((error)=>{
+            dispatch(allRejected(error.response))
+        })
+    }
+}
+
 
 
 
@@ -81,5 +113,23 @@ const usersRejected = () =>{
     return{
         type : 'GET_USER_REJECTED',
         payload : 'Error'
+    }
+}
+
+const allPending = () =>{
+    return{
+        type : 'GET_ALL_PENDING',
+    }
+}
+const allFulfilled = (payload) =>{
+    return{
+        type : 'GET_ALL_FULFILLED',
+        payload
+    }
+}
+const allRejected = (payload) =>{
+    return{
+        type : 'GET_ALL_REJECTED',
+        payload 
     }
 }

@@ -1,12 +1,12 @@
 const initialState = {
     income : [],
-    totalIncome: "",
+    totalIncome: 0,
     loadIncome: false,
     errorIncome: false,
     errorIncomeMsg: "",
 
     expense : [],
-    totalExpense: "",
+    totalExpense: 0,
     loadExpense: false,
     errorExpense: false,
     errorExpenseMsg:"",
